@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, effect, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { LoggerService } from '@my/library';
 import { Unsubscribable } from 'rxjs';
 import { NotificationService, NotificationType } from 'src/app/common-services';
@@ -7,13 +9,64 @@ import { Notification } from "src/app/layout";
 
 @Component({
   selector: 'app-demos',
-  imports: [Notification],
+  imports: [Notification, FormsModule, CommonModule, ],
   templateUrl: './demos.html',
   styleUrl: './demos.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   // providers: [ NotificationService ],
 })
 export class Demos {
+
+  readonly nombre = signal<string>('mundo')
+  readonly fontSize = signal<number>(24)
+  readonly listado = signal([
+    { id: 1, nombre: 'Madrid' },
+    { id: 2, nombre: 'barcelona' },
+    { id: 3, nombre: 'SEVILLA' },
+    { id: 4, nombre: 'ciudad Real' },
+  ])
+  readonly idProvincia = signal<number>(2)
+  readonly total = computed(() => this.listado().length)
+
+  fecha = new Date('2026-06-02')
+
+  public get Fecha(): string { return this.fecha.toISOString().substring(0, 10) }
+  public set Fecha(valor: string) {
+    const f = new Date(valor)
+    if (f.toString() === 'Invalid Date' || f === this.fecha) return;
+    this.fecha = f
+  }
+
+  readonly resultado = signal<string>('')
+  readonly visible = signal<boolean>(true)
+  readonly estetica = signal({ importante: true, error: false, urgente: true })
+
+  saluda() {
+    this.resultado.set(`Hola ${this.nombre()}`)
+  }
+
+  despide() {
+    this.resultado.set(`Adios ${this.nombre()}`)
+  }
+
+  di(algo: string) {
+    this.resultado.set(`Dice ${algo}`)
+  }
+
+  cambia() {
+    this.visible.update(value => !value)
+    // this.estetica.update(value => ({ ...value, importante: !value.importante}))
+    // this.estetica.update(value => ({ ...value, error: !value.error}))
+    this.estetica.update(value => ({ ...value, importante: !value.importante, error: !value.error }))
+  }
+
+  calculo(a: number, b: number) { return a + b }
+
+  add(provincia: string) {
+    const id = this.listado()[this.listado().length - 1].id + 1
+    this.listado.update(value => [...value, { id, nombre: provincia }])
+    this.idProvincia.set(id)
+  }
 
   // Ejemplo de servicios
   // constructor(public vm: NotificationService) {
