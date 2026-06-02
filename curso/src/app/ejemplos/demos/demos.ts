@@ -15,14 +15,15 @@ import { Notification } from "src/app/layout";
 })
 export class Demos {
 
-  constructor(public vm: NotificationService) {
-    // effect(() => {
-    //   if (this.vm.HayNotificaciones() && this.vm.Listado()[this.vm.Listado().length - 1].Type === NotificationType.error) {
-    //     window.alert(`Efecto: ${this.vm.Listado()[this.vm.Listado().length - 1].Message}`);
-    //     this.vm.remove(this.vm.Listado().length - 1);
-    //   }
-    // })
-   }
+  // Ejemplo de servicios
+  // constructor(public vm: NotificationService) {
+  //   effect(() => {
+  //     if (this.vm.HayNotificaciones() && this.vm.Listado()[this.vm.Listado().length - 1].Type === NotificationType.error) {
+  //       window.alert(`Efecto: ${this.vm.Listado()[this.vm.Listado().length - 1].Message}`);
+  //       this.vm.remove(this.vm.Listado().length - 1);
+  //     }
+  //   })
+  //  }
 
   // private suscriptor: Unsubscribable | undefined;
   // ngOnInit(): void {

@@ -31,7 +31,7 @@ export class NotificationService implements OnDestroy {
   public get Notificacion() { return this.notificacion$; }
 
   public add(msg: string, type: NotificationType = NotificationType.error) {
-    if (!msg || msg === '') {
+    if (!msg || msg.trim() === '') {
       this.out.error('Falta el mensaje de notificación.');
       return;
     }
@@ -50,7 +50,7 @@ export class NotificationService implements OnDestroy {
       this.out.error('Index out of range.');
       return;
     }
-    this.listado.update(value => value.filter((item, ind) => ind !== index));
+    this.listado.update(value => value.filter((_item, ind) => ind !== index));
   }
   public removeById(id: number) {
     this.listado.update(value => value.filter((item) => item.Id !== id));
