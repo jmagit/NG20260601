@@ -1,0 +1,47 @@
+<p>
+  <input type="button" value="add" (click)="vm.add()">
+  <input type="number" value="0" #txtId>
+  <input type="button" value="edit" (click)="vm.edit(+txtId.value)">
+</p>
+
+<form name="miForm" #miForm="ngForm">
+  <div>
+    <label for="id">código:</label>
+    <input type="number" id="id" name="id" [(ngModel)]="vm.Elemento().id" #id="ngModel"
+      required min="0">
+    <output class="error" [hidden]="!id.hasError('required') || miForm.pristine">Es obligatorio</output>
+    <output class="error" [hidden]="!id.hasError('min')">Tiene que ser un entero positivo</output>
+  </div>
+  <div>
+    <label for="nombre">nombre:</label>
+    <input type="text" id="nombre" name="nombre" [(ngModel)]="vm.Elemento().nombre" #nombre="ngModel"
+      notblank maxlength="10" minlength="2">
+    <output class="error" [hidden]="nombre.valid">{{ nombre.errors | errormsg }}</output>
+  </div>
+  <div>
+    <label for="apellidos">apellidos:</label>
+    <input type="text" id="apellidos" name="apellidos" [(ngModel)]="vm.Elemento().apellidos" #apellidos="ngModel"
+      maxlength="10" minlength="2" uppercase>
+    <output class="error" [hidden]="apellidos.valid">{{ apellidos.errors | errormsg }}</output>
+  </div>
+  <div>
+    <label for="edad">edad:</label>
+    <input type="number" id="edad" name="edad" [(ngModel)]="vm.Elemento().edad" #edad="ngModel"
+      min="16" max="67">
+    <output class="error" [hidden]="edad.valid">{{ edad.errors | errormsg }}</output>
+  </div>
+  <div>
+    <label for="correo">correo:</label>
+    <input type="email" id="correo" name="correo" [(ngModel)]="vm.Elemento().correo" #correo="ngModel">
+    <output class="error" [hidden]="correo.valid">{{ correo.errors | errormsg }}</output>
+  </div>
+  <div>
+    <label for="nif">nif:</label>
+    <input type="text" id="nif" name="nif" [(ngModel)]="vm.Elemento().nif" #nif="ngModel"
+      pattern="^\d{1,8}[A-Za-z]$" nifnie>
+    <output class="error" [hidden]="nif.valid">{{ nif.errors | errormsg:'Tiene que tener de 1 a 8 dígitos y un letra' }}</output>
+  </div>
+  <app-form-buttons (send)="vm.send()" [send-disabled]="miForm.invalid" (cancel)="vm.cancel()" />
+</form>
+
+{{ vm.Elemento() | json }}

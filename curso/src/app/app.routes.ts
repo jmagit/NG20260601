@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { Calculadora, Demos } from './ejemplos';
+import { Calculadora, Demos, Formulario } from './ejemplos';
 import { Home, PageNotFound } from './layout';
 import { LoginForm, RegisterUser } from './security';
 
@@ -8,6 +8,7 @@ export const routes: Routes = [
   { path: 'inicio', component: Home },
   { path: 'demos', component: Demos },
   { path: 'chisme/de/hacer/numeros', component: Calculadora, title: 'Calculadora' },
+  { path: 'formulario', component: Formulario },
 
   { path: 'login', component: LoginForm },
   { path: 'registro', component: RegisterUser },
@@ -21,6 +22,7 @@ export function generaMenu(): Option[] {
     { texto: 'Inicio', icono: 'fa-solid fa-house', path: '/inicio', visible: true },
     { texto: 'Demos', icono: 'fa-solid fa-person-chalkboard', path: '/demos', visible: true },
     { texto: 'Calculadora', icono: 'fa-solid fa-calculator', path: '/chisme/de/hacer/numeros', visible: true },
+    { texto: 'Formulario', icono: 'fa-solid fa-chalkboard-user', path: 'formulario', visible: true },
     { texto: 'Falla', icono: 'fa-solid fa-ban', path: '/desconocido', visible: true },
   ]
 }
