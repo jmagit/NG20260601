@@ -2,5 +2,5 @@ export const environment = {
   production: false,
   apiURL: '/api/',
   securityApiURL: '/auth/',
-  ERROR_LABEL: 0,
+  ERROR_LABEL: 99,
 };

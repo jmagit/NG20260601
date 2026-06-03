@@ -1,22 +1,25 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, effect, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { LoggerService } from '@my/library';
+import { CapitalizePipe, ElipsisPipe, ExecPipe, LoggerService, StripTagsPipe, Sizer } from '@my/library';
 import { Unsubscribable } from 'rxjs';
 import { NotificationService, NotificationType } from 'src/app/common-services';
 import { Notification } from "src/app/layout";
+import { FormButtons, Card } from "src/app/common-component";
 
 @Component({
   selector: 'app-demos',
-  imports: [Notification, FormsModule, CommonModule, ],
+  imports: [Notification, FormsModule, CommonModule, ElipsisPipe,
+    CapitalizePipe, StripTagsPipe, ExecPipe, Sizer, FormButtons, Card,
+  ],
   templateUrl: './demos.html',
   styleUrl: './demos.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   // providers: [ NotificationService ],
 })
 export class Demos {
-
+  log = inject(LoggerService)
   readonly nombre = signal<string>('mundo')
   readonly fontSize = signal<number>(24)
   readonly listado = signal([
@@ -41,6 +44,9 @@ export class Demos {
   readonly visible = signal<boolean>(true)
   readonly estetica = signal({ importante: true, error: false, urgente: true })
 
+  constructor() {
+    this.calculo = this.calculo.bind(this)
+  }
   saluda() {
     this.resultado.set(`Hola ${this.nombre()}`)
   }
@@ -60,7 +66,11 @@ export class Demos {
     this.estetica.update(value => ({ ...value, importante: !value.importante, error: !value.error }))
   }
 
-  calculo(a: number, b: number) { return a + b }
+  count = 0
+  calculo(a: number, b: number) {
+    this.log.log(`calculo ${++this.count}`)
+    return a + b
+  }
 
   add(provincia: string) {
     const id = this.listado()[this.listado().length - 1].id + 1
