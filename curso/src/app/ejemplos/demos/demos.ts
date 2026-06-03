@@ -7,11 +7,13 @@ import { Unsubscribable } from 'rxjs';
 import { NotificationService, NotificationType } from 'src/app/common-services';
 import { Notification } from "src/app/layout";
 import { FormButtons, Card } from "src/app/common-component";
+import { Calculadora, SimboloDecimal } from '../calculadora/calculadora';
 
 @Component({
   selector: 'app-demos',
-  imports: [Notification, FormsModule, CommonModule, ElipsisPipe,
+  imports: [/*Notification,*/ FormsModule, CommonModule, ElipsisPipe,
     CapitalizePipe, StripTagsPipe, ExecPipe, Sizer, FormButtons, Card,
+    Calculadora,
   ],
   templateUrl: './demos.html',
   styleUrl: './demos.css',
@@ -64,6 +66,7 @@ export class Demos {
     // this.estetica.update(value => ({ ...value, importante: !value.importante}))
     // this.estetica.update(value => ({ ...value, error: !value.error}))
     this.estetica.update(value => ({ ...value, importante: !value.importante, error: !value.error }))
+    this.simbolo = this.simbolo === ',' ? '.' : ','
   }
 
   count = 0
@@ -128,4 +131,29 @@ export class Demos {
   // addSinSignal() {
   //   this.sinSignal++
   // }
+
+  // Ejemplo de Calculadora
+
+  idiomas = signal([
+    { codigo: 'en-US', region: 'USA' },
+    { codigo: 'es', region: 'España' },
+    { codigo: 'pt', region: 'Portugal' },
+  ]).asReadonly();
+  idioma = signal(this.idiomas()[0].codigo);
+  calculos = signal<Calculo[]>([]);
+  valCalculadora = signal(666);
+  simbolo: SimboloDecimal = ','
+
+  ponResultado(origen: string, valor: number) {
+    this.calculos.update(value => [ ...value, {
+      pos: this.calculos.length + 1,
+      origen,
+      valor: +valor
+    }]);
+  }
+}
+interface Calculo {
+  pos: number
+  origen: string
+  valor: number
 }
