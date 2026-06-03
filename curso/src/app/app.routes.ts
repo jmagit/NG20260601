@@ -1,12 +1,16 @@
 import { Routes } from '@angular/router';
 import { Calculadora, Demos } from './ejemplos';
 import { Home, PageNotFound } from './layout';
+import { LoginForm, RegisterUser } from './security';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', component: Home },
   { path: 'inicio', component: Home },
   { path: 'demos', component: Demos },
   { path: 'chisme/de/hacer/numeros', component: Calculadora, title: 'Calculadora' },
+
+  { path: 'login', component: LoginForm },
+  { path: 'registro', component: RegisterUser },
 
   { path: '404.html', component: PageNotFound },
   { path: '**', component: PageNotFound },

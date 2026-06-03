@@ -4,8 +4,9 @@ import { Subject, Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
 export class EventData {
-  constructor(private name: string, private value?: any) {}
+  constructor(private name: symbol, private value?: any) {}
   public get Name() { return this.name }
+  public get EventName() { return this.name.toString() }
   public get Value() { return this.value }
 }
 
@@ -20,8 +21,8 @@ export class EventBusService {
   private subject$ = new Subject<EventData>();
 
   emit(event: EventData): void;
-  emit(name: string, value?: any): void;
-  emit(eventOrName: EventData | string, value?: any): void {
+  emit(name: symbol, value?: any): void;
+  emit(eventOrName: EventData | symbol, value?: any): void {
     if (eventOrName instanceof EventData) {
       this.subject$.next(eventOrName);
     } else {
@@ -29,7 +30,7 @@ export class EventBusService {
     }
   }
 
-  on(eventName: string, action: any): Subscription {
+  on(eventName: symbol, action: any): Subscription {
     return this.subject$.pipe(
       filter((e: EventData) => e.Name === eventName),
       map((e: EventData) => e.Value)
