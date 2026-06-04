@@ -1,5 +1,9 @@
 <h1>Hola {{ nombre() | striptags | elipsis:20 | uppercase}}</h1>
-
+<p>
+  <a routerLink="/formulario">navega</a> |&nbsp;
+  <a href="/demos">href</a> |&nbsp;
+  <a [routerLink]="['formulario']">relativa</a>
+</p>
 <div class="container theme-dark">
   <div class="row">
     <div class="col">

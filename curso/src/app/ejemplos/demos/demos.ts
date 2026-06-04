@@ -8,13 +8,13 @@ import { NotificationService, NotificationType } from 'src/app/common-services';
 import { Notification } from "src/app/layout";
 import { FormButtons, Card } from "src/app/common-component";
 import { Calculadora, SimboloDecimal } from '../calculadora/calculadora';
+import { RouterLink } from "@angular/router";
 
 @Component({
   selector: 'app-demos',
   imports: [/*Notification,*/ FormsModule, CommonModule, ElipsisPipe,
     CapitalizePipe, StripTagsPipe, ExecPipe, Sizer, FormButtons, Card,
-    Calculadora,
-  ],
+    Calculadora, RouterLink],
   templateUrl: './demos.html',
   styleUrl: './demos.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
