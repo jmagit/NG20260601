@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ErrorMessagePipe, NIFNIEValidator, NotblankValidator, TypeValidator, UppercaseValidator } from '@my/library';
 import { FormButtons } from 'src/app/common-component';
 import { NotificationService, NotificationType } from 'src/app/common-services';
+import { RESTDAOService } from 'src/app/core';
 
 type Mode = 'add' | 'edit'
 
@@ -16,22 +17,35 @@ interface Persona {
   nif?: string
 }
 
-const porDefecto: Persona = { nombre: ''}
+const porDefecto: Persona = { nombre: '' }
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
+export class PersonasDAOService extends RESTDAOService<Persona, number> {
+  constructor() {
+    super('personas')
+  }
+}
+@Injectable({ providedIn: 'root' })
 export class PersonasViewModelService {
   Modo = signal<Mode>('add')
-  Elemento = signal<Persona>({...porDefecto})
+  Elemento = signal<Persona>({ ...porDefecto })
 
-  constructor(private notify: NotificationService) { }
+  constructor(private notify: NotificationService, private dao: PersonasDAOService) { }
 
   add() {
-    this.Elemento.set({...porDefecto})
+    this.Elemento.set({ ...porDefecto })
     this.Modo.set('add')
   }
   edit(key: number) {
-    this.Elemento.set({ id: key, nombre: 'Pepito', apellidos: 'Grillo', edad: 99, correo: 'pgrillo@example.com', nif: '4g'})
-    this.Modo.set('edit')
+    this.dao.get(key).subscribe({
+      next: data => {
+        this.Elemento.set(data)
+        this.Modo.set('edit')
+      },
+      error: err => this.notify.add(`${err.status}: ${JSON.stringify(err.body)}`)
+    })
+    // this.Elemento.set({ id: key, nombre: 'Pepito', apellidos: 'Grillo', edad: 99, correo: 'pgrillo@example.com', nif: '4g'})
+    // this.Modo.set('edit')
   }
 
   cancel() {
@@ -39,14 +53,28 @@ export class PersonasViewModelService {
   }
 
   send() {
-    switch(this.Modo()) {
+    switch (this.Modo()) {
       case 'add':
-        this.notify.add(`POST: ${JSON.stringify(this.Elemento())}`, NotificationType.info)
-        this.cancel()
+        this.dao.add(this.Elemento()).subscribe({
+          next: _data => {
+            this.cancel()
+          },
+          error: err => this.notify.add(`${err.status}: ${JSON.stringify(err.body)}`)
+        })
+        // this.notify.add(`POST: ${JSON.stringify(this.Elemento())}`, NotificationType.info)
+        // this.cancel()
         break
       case 'edit':
-        this.notify.add(`PUT: ${JSON.stringify(this.Elemento())}`, NotificationType.warn)
-        this.cancel()
+        if (this.Elemento().id) {
+          this.dao.change(this.Elemento().id as number, this.Elemento()).subscribe({
+            next: _data => {
+              this.cancel()
+            },
+            error: err => this.notify.add(`${err.status}: ${JSON.stringify(err.body)}`)
+          })
+        }
+        // this.notify.add(`PUT: ${JSON.stringify(this.Elemento())}`, NotificationType.warn)
+        // this.cancel()
         break
     }
   }
@@ -55,8 +83,8 @@ export class PersonasViewModelService {
 
 @Component({
   selector: 'app-formulario',
-  imports: [ FormsModule, CommonModule, ErrorMessagePipe, FormButtons, NIFNIEValidator, UppercaseValidator, NotblankValidator,
-    TypeValidator ],
+  imports: [FormsModule, CommonModule, ErrorMessagePipe, FormButtons, NIFNIEValidator, UppercaseValidator, NotblankValidator,
+    TypeValidator],
   templateUrl: './formulario.html',
   styleUrl: './formulario.css',
 })
@@ -65,7 +93,7 @@ export class Formulario {
 
   constructor(public vm: PersonasViewModelService) {
     effect(() => {
-      if(this.id() !== undefined) {
+      if (this.id() !== undefined) {
         vm.edit(+this.id())
       }
     })

@@ -9,6 +9,8 @@ import { environment } from 'src/environments/environment';
 import { DATE_PIPE_DEFAULT_OPTIONS, registerLocaleData } from '@angular/common';
 import localeEs from '@angular/common/locales/es';
 import localeEsExtra from '@angular/common/locales/extra/es';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { ajaxWaitInterceptor } from './layout';
 registerLocaleData(localeEs, 'es', localeEsExtra);
 
 export const appConfig: ApplicationConfig = {
@@ -19,5 +21,6 @@ export const appConfig: ApplicationConfig = {
     { provide: ERROR_LABEL, useValue: environment.ERROR_LABEL},
     { provide: LOCALE_ID, useValue: 'es-Es'},
     { provide: DATE_PIPE_DEFAULT_OPTIONS, useValue: { dateFormat: 'dd/MMMM/yy' } },
+    provideHttpClient(withInterceptors([ ajaxWaitInterceptor ]))
   ]
 };
