@@ -2,7 +2,7 @@ import { ApplicationConfig, LOCALE_ID, provideBrowserGlobalErrorListeners } from
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 
 import { routes } from './app.routes';
-import { ERROR_LABEL, LoggerService } from '@my/library';
+import { ERROR_LEVEL, LoggerService } from '@my/library';
 import { environment } from 'src/environments/environment';
 
 // Cargar idioma
@@ -19,7 +19,7 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes, withComponentInputBinding()),
     LoggerService,
-    { provide: ERROR_LABEL, useValue: environment.ERROR_LABEL},
+    { provide: ERROR_LEVEL, useValue: environment.ERROR_LEVEL},
     { provide: LOCALE_ID, useValue: 'es-Es'},
     { provide: DATE_PIPE_DEFAULT_OPTIONS, useValue: { dateFormat: 'dd/MMMM/yy' } },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true, },

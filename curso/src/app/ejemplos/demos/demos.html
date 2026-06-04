@@ -106,7 +106,8 @@
   </p>
 </app-card>
 
-<app-form-buttons (send)="saluda()" send-text="saluda" [send-disabled]="!visible()" (cancel)="despide()" [cancel-text]="'despide'" />
+<app-form-buttons (send)="saluda()" send-text="saluda" [send-disabled]="!visible()" (cancel)="despide()" [cancel-text]="'despide'"
+  (delete)="di('confirma borrado')" [delete-visible]="true" />
 
 <!-- Ejemplo de servicios
  <p>
