@@ -38,6 +38,7 @@ Añadir el interceptor en `src/app/app.config.ts` (añadir también `withInterce
 ## Tokens
 
 - `AUTH_REQUIRED`: Opción HTTP para requerir autenticación.
+  - *{ context: new HttpContext().set(AUTH_REQUIRED, true) }*
 - `LOGIN_EVENT`: Notificación DomainEvent, el usuario se ha autenticado.
 - `LOGIN_FORM_OPEN_EVENT`: Notificación DomainEvent, se ha presentado el LoginForm.
 - `LOGIN_FORM_CLOSE_EVENT`:  Notificación DomainEvent, se ha cerrado el LoginForm.
