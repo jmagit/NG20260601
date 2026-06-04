@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { Calculadora, Demos, Formulario } from './ejemplos';
 import { Home, PageNotFound } from './layout';
-import { LoginForm, RegisterUser } from './security';
+import { AuthService, LoginForm, RegisterUser } from './security';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', component: Home },
@@ -17,13 +17,13 @@ export const routes: Routes = [
   { path: '**', component: PageNotFound },
 ];
 
-export function generaMenu(): Option[] {
+export function generaMenu(auth: AuthService): Option[] {
   return [
     { texto: 'Inicio', icono: 'fa-solid fa-house', path: '/inicio', visible: true },
     { texto: 'Demos', icono: 'fa-solid fa-person-chalkboard', path: '/demos', visible: true },
     { texto: 'Calculadora', icono: 'fa-solid fa-calculator', path: '/chisme/de/hacer/numeros', visible: true },
     { texto: 'Formulario', icono: 'fa-solid fa-chalkboard-user', path: 'formulario', visible: true },
-    { texto: 'Falla', icono: 'fa-solid fa-ban', path: '/desconocido', visible: true },
+    { texto: 'Falla', icono: 'fa-solid fa-ban', path: '/desconocido', visible: auth.isAuthenticated() },
   ]
 }
 

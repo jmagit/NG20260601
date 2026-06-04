@@ -49,3 +49,12 @@
 </form>
 
 {{ vm.Elemento() | json }}
+
+<input type="button" value="get" (click)="getLibro()">
+<!-- <ul>
+@for(item of libros.query() | async; track item.idLibro) {
+  <li>{{item.titulo}}</li>
+}
+</ul> -->
+
+{{ listado() | json}}

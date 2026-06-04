@@ -1,10 +1,12 @@
 import { CommonModule } from '@angular/common';
+import { HttpContext } from '@angular/common/http';
 import { Component, effect, Injectable, input, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ErrorMessagePipe, NIFNIEValidator, NotblankValidator, TypeValidator, UppercaseValidator } from '@my/library';
 import { FormButtons } from 'src/app/common-component';
 import { NotificationService, NotificationType } from 'src/app/common-services';
 import { RESTDAOService } from 'src/app/core';
+import { AUTH_REQUIRED } from 'src/app/security';
 
 type Mode = 'add' | 'edit'
 
@@ -25,6 +27,14 @@ export class PersonasDAOService extends RESTDAOService<Persona, number> {
     super('personas')
   }
 }
+
+@Injectable({ providedIn: 'root' })
+export class LibrosDAOService extends RESTDAOService<any, number> {
+  constructor() {
+    super('libros', { context: new HttpContext().set(AUTH_REQUIRED, true) })
+  }
+}
+
 @Injectable({ providedIn: 'root' })
 export class PersonasViewModelService {
   Modo = signal<Mode>('add')
@@ -91,11 +101,17 @@ export class PersonasViewModelService {
 export class Formulario {
   readonly id = input<number>(0)
 
-  constructor(public vm: PersonasViewModelService) {
+  constructor(public vm: PersonasViewModelService, public libros: LibrosDAOService) {
     effect(() => {
       if (this.id() !== undefined) {
         vm.edit(+this.id())
       }
     })
+  }
+  listado = signal<any[]>([])
+  getLibro() {
+    this.libros.query().subscribe(
+      data => this.listado.set(data)
+    )
   }
 }
