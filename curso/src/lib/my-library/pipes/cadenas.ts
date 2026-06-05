@@ -10,6 +10,15 @@ export class ElipsisPipe implements PipeTransform {
       ? value : (value.substr(0, maxlen - 1) + '\u2026');
   }
 }
+@Pipe({
+    name: 'upper'
+})
+export class UpperPipe implements PipeTransform {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  transform(value?: string): any {
+    return value && typeof(value) === "string" ? value.toUpperCase() : value;
+  }
+}
 
 @Pipe({
     name: 'capitalize'

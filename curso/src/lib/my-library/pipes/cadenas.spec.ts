@@ -1,4 +1,4 @@
-import { CapitalizePipe, ElipsisPipe, ErrorMessagePipe, StripTagsPipe } from './cadenas';
+import { CapitalizePipe, ElipsisPipe, ErrorMessagePipe, StripTagsPipe, UpperPipe } from './cadenas';
 
 describe('ElipsisPipe', () => {
   let pipe = new ElipsisPipe();
@@ -93,8 +93,8 @@ describe('ErrorMessagePipe', () => {
       max: { max: 10 },
       simple: 'Mensaje simple',
       simpleConPunto: 'Mensaje simple.',
-      complejo: { message : 'Mensaje contenido'},
-      complejoConPunto: { message : 'Mensaje contenido.'}
+      complejo: { message: 'Mensaje contenido' },
+      complejoConPunto: { message: 'Mensaje contenido.' }
     }
     expect(pipe.transform(errors)).toBe('Es obligatorio. Como mínimo debe tener 10 caracteres. Como máximo debe tener 10 caracteres. El formato no es correcto. El formato del correo electrónico no es correcto. El valor debe ser mayor o igual a 10. El valor debe ser inferior o igual a 10. Mensaje simple. Mensaje simple. Mensaje contenido. Mensaje contenido.');
   });
@@ -102,8 +102,45 @@ describe('ErrorMessagePipe', () => {
     const errors = {
       pattern: true,
     }
-    const patternMsg="Hola mundo"
+    const patternMsg = "Hola mundo"
     expect(pipe.transform(errors, patternMsg)).toBe(`${patternMsg}.`);
   });
 
 });
+
+describe('upper pipe', () => {
+  describe('OK', () => {
+    test('en minusculas', () => {
+      const p = new UpperPipe();
+
+      const actual = p.transform('abc')
+
+      expect(actual).toBe('ABC')
+    })
+    test('en mayusculas', () => {
+      const p = new UpperPipe();
+
+      const actual = p.transform('ABC')
+
+      expect(actual).toBe('ABC')
+    })
+  });
+
+  describe('KO', () => {
+    test('es null', () => {
+      const p = new UpperPipe();
+
+      const actual = p.transform(undefined)
+
+      expect(actual).toBe(undefined)
+    })
+    test('es numero', () => {
+      const p = new UpperPipe();
+
+      const actual = p.transform("123")
+
+      expect(actual).toBe("123")
+    })
+
+  });
+})
