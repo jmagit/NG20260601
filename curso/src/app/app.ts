@@ -2,8 +2,7 @@ import { Component, inject, ViewContainerRef } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Footer, Header, Notification, NotificationModal, AjaxWait } from './layout';
-import { NavigationService } from './common-services';
-import { RootViewContainerRefService } from './common-services/root-view-container-ref-service';
+import { NavigationService, RootViewContainerRefService } from './common-services';
 
 @Component({
   selector: 'app-root',
