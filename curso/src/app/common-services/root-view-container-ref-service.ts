@@ -1,5 +1,13 @@
 import { Injectable, ViewContainerRef } from '@angular/core';
 
+// Cachea el ViewContainerRef del componente app-root para permitir la creación
+// dinámica de componentes. Debe registrarse en el constructor de la clase App:
+//
+// export class App {
+//   constructor(view: RootViewContainerRefService, rootViewContainerRef: ViewContainerRef) {
+//     view.RootViewContainerRef = rootViewContainerRef;
+//   }
+
 @Injectable({providedIn: 'root'})
 export class RootViewContainerRefService {
   private rootViewContainerRef: ViewContainerRef | null = null;
