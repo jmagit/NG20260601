@@ -187,7 +187,7 @@ export class ConfirmComponent {
   providedIn: 'root',
 })
 export class WindowService {
-  public view = inject(RootViewContainerRefService);
+  private view = inject(RootViewContainerRefService);
 
   alert(message: string, tipo?: NotificationType, titulo?: string, cerrar?: string) {
     const binds = [

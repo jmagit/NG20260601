@@ -1,4 +1,4 @@
-import { CapitalizePipe, ElipsisPipe, ErrorMessagePipe, StripTagsPipe, UpperPipe } from './cadenas';
+import { CapitalizePipe, ElipsisPipe, ErrorMessagePipe, MaskPipe, StripTagsPipe,  } from './cadenas';
 
 describe('ElipsisPipe', () => {
   let pipe = new ElipsisPipe();
@@ -108,38 +108,31 @@ describe('ErrorMessagePipe', () => {
 
 });
 
-describe('upper pipe', () => {
+describe('mask pipe', () => {
   describe('OK', () => {
-    test('en minusculas', () => {
-      const p = new UpperPipe();
+    test('cadena', () => {
+      const p = new MaskPipe();
 
       const actual = p.transform('abc')
 
-      expect(actual).toBe('ABC')
+      expect(actual).toBe('xxx')
     })
-    test('en mayusculas', () => {
-      const p = new UpperPipe();
+    test('es numero', () => {
+      const p = new MaskPipe();
 
-      const actual = p.transform('ABC')
+      const actual = p.transform('1234567', "9")
 
-      expect(actual).toBe('ABC')
+      expect(actual).toBe('9999999')
     })
   });
 
   describe('KO', () => {
     test('es null', () => {
-      const p = new UpperPipe();
+      const p = new MaskPipe();
 
       const actual = p.transform(undefined)
 
-      expect(actual).toBe(undefined)
-    })
-    test('es numero', () => {
-      const p = new UpperPipe();
-
-      const actual = p.transform("123")
-
-      expect(actual).toBe("123")
+      expect(actual).toBe('')
     })
 
   });

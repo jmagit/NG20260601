@@ -141,8 +141,9 @@ describe('ConfirmComponent', () => {
   });
 });
 
-describe.skip('WindowService - Dialog Management', () => {
+describe('WindowService - Dialog Management', () => {
   let service: WindowService;
+  let viewContainer: RootViewContainerRefService;
   let mockViewContainerRef: Partial<ViewContainerRef>;
   let mockComponentRef: Partial<ComponentRef<ConfirmComponent>>;
 
@@ -151,6 +152,7 @@ describe.skip('WindowService - Dialog Management', () => {
       providers: [ RootViewContainerRefService, ViewContainerRef]
     });
     service = TestBed.inject(WindowService);
+    viewContainer = TestBed.inject(RootViewContainerRefService);
 
     mockComponentRef = {
       destroy: vi.fn()
@@ -159,16 +161,20 @@ describe.skip('WindowService - Dialog Management', () => {
       createComponent: vi.fn().mockReturnValue(mockComponentRef)
     } as unknown as Partial<ViewContainerRef>;
 
-    service.view.RootViewContainerRef = mockViewContainerRef as unknown as ViewContainerRef;
+    viewContainer.RootViewContainerRef = mockViewContainerRef as unknown as ViewContainerRef;
   });
 
   it('should throw error when RootViewContainerRef is not initialized', () => {
-    const newService = new WindowService();
-    expect(() => newService.view.RootViewContainerRef).toThrowError('ViewContainerRef no está inicializado');
+    const newService = new RootViewContainerRefService();
+    expect(() => newService.RootViewContainerRef).toThrow(`
+        ViewContainerRef debe ser inicializado en el componente principal:
+          constructor(window: WindowService, rootViewContainerRef: ViewContainerRef) {
+            window.RootViewContainerRef = rootViewContainerRef;
+          }`);
   });
 
   it('should set and get RootViewContainerRef', () => {
-    expect(service.view.RootViewContainerRef).toBe(mockViewContainerRef);
+    expect(viewContainer.RootViewContainerRef).toBe(mockViewContainerRef);
   });
 
   it('should create alert component with correct bindings', () => {

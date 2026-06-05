@@ -11,12 +11,11 @@ export class ElipsisPipe implements PipeTransform {
   }
 }
 @Pipe({
-    name: 'upper'
+    name: 'mask'
 })
-export class UpperPipe implements PipeTransform {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  transform(value?: string): any {
-    return value && typeof(value) === "string" ? value.toUpperCase() : value;
+export class MaskPipe implements PipeTransform {
+  transform(value: string | number | undefined | null, char = 'x') {
+    return char.repeat(value?.toString().length ?? 0)
   }
 }
 
