@@ -1,8 +1,8 @@
-import { Component, inject, ViewContainerRef } from '@angular/core';
+import { Component, ViewContainerRef } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { Footer, Header, Notification, NotificationModal, AjaxWait } from './layout';
-import { NavigationService, RootViewContainerRefService } from './common-services';
+import { Footer, Header, NotificationModal, AjaxWait } from './layout';
+import { RootViewContainerRefService } from './common-services';
 
 @Component({
   selector: 'app-root',
@@ -11,8 +11,6 @@ import { NavigationService, RootViewContainerRefService } from './common-service
   styleUrl: './app.css'
 })
 export class App {
-  nav = inject(NavigationService)
-
   constructor(view: RootViewContainerRefService, rootViewContainerRef: ViewContainerRef) {
     view.RootViewContainerRef = rootViewContainerRef;
   }

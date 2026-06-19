@@ -1,4 +1,4 @@
-import { ApplicationConfig, LOCALE_ID, provideBrowserGlobalErrorListeners } from '@angular/core';
+import { ApplicationConfig, inject, LOCALE_ID, provideBrowserGlobalErrorListeners, provideEnvironmentInitializer } from '@angular/core';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 
 import { routes } from './app.routes';
@@ -12,12 +12,14 @@ import localeEsExtra from '@angular/common/locales/extra/es';
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptors, withInterceptorsFromDi } from '@angular/common/http';
 import { ajaxWaitInterceptor } from './layout';
 import { AuthInterceptor } from './security';
+import { NavigationService } from './common-services';
 registerLocaleData(localeEs, 'es', localeEsExtra);
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes, withComponentInputBinding()),
+    provideEnvironmentInitializer(() => inject(NavigationService)),
     LoggerService,
     { provide: ERROR_LEVEL, useValue: environment.ERROR_LEVEL},
     { provide: LOCALE_ID, useValue: 'es-Es'},
